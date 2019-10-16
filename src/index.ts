@@ -3,7 +3,7 @@ import Parser from "./tool/parser"
 
 class CmdPrinter{
     //propiedades estáticas
-    public static getAll() {
+    public static getAll(): CmdPrinter[] {
         let raw = <string>Exec.sync("wmic printer list brief")
         let table = Parser.shellTable(raw)
 
@@ -23,7 +23,7 @@ class CmdPrinter{
         return out
     }
 
-    public static getByName(name: string) {
+    public static getByName(name: string): CmdPrinter[] | null {
         let data = this.getAll()
         let item: CmdPrinter | null = null
 

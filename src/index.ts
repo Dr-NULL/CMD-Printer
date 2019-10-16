@@ -141,7 +141,7 @@ class CmdPrinter{
     public async print(path: string): Promise<void>{
         let cmd = Global.Path.Bin.sumatraPDF
         cmd += ` -print-to "${this._name}"`
-        cmd += ` -silent ${path}`
+        cmd += ` -silent "${path}"`
 
         let proc = child.exec(cmd, (err, out) => {
             if (err != null) {
@@ -155,7 +155,7 @@ class CmdPrinter{
     public printSync(path: string): void {
         let cmd = Global.Path.Bin.sumatraPDF
         cmd += ` -print-to "${this._name}"`
-        cmd += ` -silent ${path}`
+        cmd += ` -silent "${path}"`
 
         child.execSync(cmd)
     }

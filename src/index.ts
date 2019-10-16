@@ -1,9 +1,57 @@
 import Exec from "./tool/exec"
 import Parser from "./tool/parser"
+import Global from "./global"
+import * as child from "child_process"
 
 class CmdPrinter{
     //propiedades estáticas
-    public static getAll(): CmdPrinter[] {
+    public static async getAll(): Promise<CmdPrinter[]> {
+        //Ejecución del proceso en paralelo
+        let raw = ""
+        try {
+            raw = <string>await Exec.async("wmic printer list brief")
+        } catch(err) {
+            return Promise.reject("The WIMIC Command has an error")
+        }
+    
+        //Obtener Parámetros
+        try {
+            let table = Parser.shellTable(raw)
+            let out: CmdPrinter[] = []
+            table.row.forEach(item => {
+                out.push(new CmdPrinter(
+                    item[0],
+                    item[1],
+                    item[2],
+                    item[3],
+                    item[4],
+                    item[5]
+                ))
+            })
+            return Promise.resolve(out)
+        
+        } catch(err) {
+            return Promise.reject("Unable to parse the string data into a Table Data")
+        }
+    }
+
+    public static async getByName(name: string): Promise<CmdPrinter | null> {
+        try {
+            let data = await this.getAll()
+            let item: CmdPrinter | null = null
+            data.forEach(printer => {
+                if (printer.name == name) {
+                    item = printer
+                }
+            })
+            return Promise.resolve(item)
+            
+        } catch(err) {
+            return Promise.reject(err)
+        }
+    }
+    //propiedades estáticas
+    public static getAllSync(): CmdPrinter[] {
         let raw = <string>Exec.sync("wmic printer list brief")
         let table = Parser.shellTable(raw)
 
@@ -23,8 +71,8 @@ class CmdPrinter{
         return out
     }
 
-    public static getByName(name: string): CmdPrinter[] | null {
-        let data = this.getAll()
+    public static getByNameSync(name: string): CmdPrinter | null {
+        let data = this.getAllSync()
         let item: CmdPrinter | null = null
 
         data.forEach(printer => {
@@ -88,6 +136,28 @@ class CmdPrinter{
         this._status = status
         this._shareName = shareName
         this._systemName = systemName
+    }
+
+    public async print(path: string): Promise<void>{
+        let cmd = Global.Path.Bin.sumatraPDF
+        cmd += ` -print-to "${this._name}"`
+        cmd += ` -silent ${path}`
+
+        let proc = child.exec(cmd, (err, out) => {
+            if (err != null) {
+                return Promise.reject(err)
+            } else {
+                return Promise.resolve()
+            }
+        })
+    }
+
+    public printSync(path: string): void {
+        let cmd = Global.Path.Bin.sumatraPDF
+        cmd += ` -print-to "${this._name}"`
+        cmd += ` -silent ${path}`
+
+        child.execSync(cmd)
     }
 }
 export default CmdPrinter

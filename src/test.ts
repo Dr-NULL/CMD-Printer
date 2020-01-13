@@ -13,7 +13,7 @@ let testAsync = async () => {
     await zebra.print(`test/test.pdf`)
     console.log("Async -> DONE!")
 }
-testAsync()
+//testAsync()
 
 //Test Sync
 let testSync = () => {
@@ -28,3 +28,13 @@ let testSync = () => {
     console.log(" Sync -> DONE!")
 }
 testSync()
+
+//Test Remote
+let testRemote = () => {
+    CmdPrinter.printRemoteSync(
+        'test/test.pdf',
+        '192.168.20.249',
+        'BIXOLON SRP-350III'
+    )
+}
+//testRemote()

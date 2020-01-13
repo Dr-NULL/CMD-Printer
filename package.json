@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "nodemon dist/test.js",
+    "start": "node dist/test.js",
     "build": "tsc"
   },
   "repository": {

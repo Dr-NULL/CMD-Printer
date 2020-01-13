@@ -21,11 +21,7 @@ class CmdPrinter{
             table.row.forEach(item => {
                 out.push(new CmdPrinter(
                     item[0],
-                    item[1],
-                    item[2],
-                    item[3],
-                    item[4],
-                    item[5]
+                    item[1]
                 ))
             })
             return Promise.resolve(out)
@@ -60,11 +56,7 @@ class CmdPrinter{
         table.row.forEach(item => {
             out.push(new CmdPrinter(
                 item[0],
-                item[1],
-                item[2],
-                item[3],
-                item[4],
-                item[5]
+                item[1]
             ))
         })
 
@@ -83,13 +75,28 @@ class CmdPrinter{
 
         return item
     }
+
+    public static async printRemote(path: string, location: string, name: string): Promise<void>{
+        let cmd = `.\\PDFtoPrinter.exe "${path}" "\\\\${location}\\${name}"`
+
+        let proc = child.exec(cmd, (err, out) => {
+            if (err != null) {
+                return Promise.reject(err)
+            } else {
+                return Promise.resolve()
+            }
+        })
+    }
+
+    public static printRemoteSync(path: string, location: string, name: string): void {
+        let cmd = `.\\PDFtoPrinter.exe "${path}" "\\\\${location}\\${name}"`
+
+        child.execSync(cmd)
+    }
     
     private _location : string;
     public get location() : string {
         return this._location;
-    }
-    public set location(v : string) {
-        this._location = v;
     }
 
     private _name : string;
@@ -97,51 +104,13 @@ class CmdPrinter{
         return this._name;
     }
     
-    private _state : number;
-    public get state() : number {
-        return this._state;
-    }
-    public set state(v : number) {
-        this._state = v;
-    }
-    
-    private _status : number;
-    public get status() : number {
-        return this._status;
-    }
-    public set status(v : number) {
-        this._status = v;
-    }
-    
-    private _shareName : string;
-    public get shareName() : string {
-        return this._shareName;
-    }
-    public set shareName(v : string) {
-        this._shareName = v;
-    }
-
-    private _systemName : string;
-    public get systemName() : string {
-        return this._systemName;
-    }
-    public set systemName(v : string) {
-        this._systemName = v;
-    }
-    
-    private constructor(location: string, name: string, state: number, status: number, shareName: string, systemName: string) {
+    private constructor(location: string, name: string) {
         this._location = location
         this._name = name
-        this._state = state
-        this._status = status
-        this._shareName = shareName
-        this._systemName = systemName
     }
 
     public async print(path: string): Promise<void>{
-        let cmd = Global.Path.Bin.sumatraPDF
-        cmd += ` -print-to "${this._name}"`
-        cmd += ` -silent "${path}"`
+        let cmd = `.\\PDFtoPrinter.exe "${path}" "${this._name}"`
 
         let proc = child.exec(cmd, (err, out) => {
             if (err != null) {
@@ -153,9 +122,7 @@ class CmdPrinter{
     }
 
     public printSync(path: string): void {
-        let cmd = Global.Path.Bin.sumatraPDF
-        cmd += ` -print-to "${this._name}"`
-        cmd += ` -silent "${path}"`
+        let cmd = `.\\PDFtoPrinter.exe "${path}" "${this._name}"`
 
         child.execSync(cmd)
     }

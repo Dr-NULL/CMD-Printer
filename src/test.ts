@@ -27,7 +27,7 @@ let testSync = () => {
     zebra.printSync(`test/test.pdf`)
     console.log(" Sync -> DONE!")
 }
-testSync()
+//testSync()
 
 //Test Remote
 let testRemote = () => {
@@ -37,4 +37,4 @@ let testRemote = () => {
         'BIXOLON SRP-350III'
     )
 }
-//testRemote()
+testRemote()

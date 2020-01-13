@@ -1,7 +1,7 @@
 import Exec from "./tool/exec"
 import Parser from "./tool/parser"
-import Global from "./global"
 import * as child from "child_process"
+import { resolve } from 'path';
 
 class CmdPrinter{
     //propiedades estáticas
@@ -77,7 +77,7 @@ class CmdPrinter{
     }
 
     public static async printRemote(path: string, location: string, name: string): Promise<void>{
-        let cmd = `.\\PDFtoPrinter.exe "${path}" "\\\\${location}\\${name}"`
+        let cmd = `${this.getExe()} "${path}" "\\\\${location}\\${name}"`
 
         let proc = child.exec(cmd, (err, out) => {
             if (err != null) {
@@ -89,7 +89,7 @@ class CmdPrinter{
     }
 
     public static printRemoteSync(path: string, location: string, name: string): void {
-        let cmd = `.\\PDFtoPrinter.exe "${path}" "\\\\${location}\\${name}"`
+        let cmd = `${this.getExe()} "${path}" "\\\\${location}\\${name}"`
 
         child.execSync(cmd)
     }
@@ -110,7 +110,7 @@ class CmdPrinter{
     }
 
     public async print(path: string): Promise<void>{
-        let cmd = `.\\PDFtoPrinter.exe "${path}" "${this._name}"`
+        let cmd = `${CmdPrinter.getExe()} "${path}" "${this._name}"`
 
         let proc = child.exec(cmd, (err, out) => {
             if (err != null) {
@@ -122,9 +122,17 @@ class CmdPrinter{
     }
 
     public printSync(path: string): void {
-        let cmd = `.\\PDFtoPrinter.exe "${path}" "${this._name}"`
+        let cmd = `${CmdPrinter.getExe()} "${path}" "${this._name}"`
 
         child.execSync(cmd)
+    }
+
+    private static getExe() {
+        return resolve(
+            __dirname,
+            "..",
+            "PDFtoPrinter.exe"
+        )
     }
 }
 export default CmdPrinter

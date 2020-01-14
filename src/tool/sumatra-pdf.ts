@@ -43,9 +43,13 @@ export function printLocal(path: string, printer: string, options?: iOptions) {
         cmd += '"'
     }
 
-    execSync(cmd, {
-        encoding: 'utf8'
-    })
+    try {
+        execSync(cmd, {
+            encoding: 'utf8'
+        })
+    } catch(err) {
+        throw new Error(`The printer "${printer}" it's not found!`)
+    }
 }
 
 export function printRemote(path: string, location: string, printer: string, options?: iOptions) {

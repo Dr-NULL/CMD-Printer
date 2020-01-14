@@ -2,32 +2,51 @@ import Exec from "./tool/exec"
 import Parser from "./tool/parser"
 import * as SumatraPDF from "./tool/sumatra-pdf"
 
+export { iOptions } from "./tool/sumatra-pdf"
 export class CmdPrinter{
     //propiedades estáticas
     public static async getAll(): Promise<CmdPrinter[]> {
-        //Ejecución del proceso en paralelo
-        let raw = ""
-        try {
-            raw = <string>await Exec.async("wmic printer list brief")
-        } catch(err) {
-            return Promise.reject("The WIMIC Command has an error")
-        }
-    
         //Obtener Parámetros
         try {
-            let table = Parser.shellTable(raw)
-            let out: CmdPrinter[] = []
-            table.row.forEach(item => {
-                out.push(new CmdPrinter(
-                    item[0],
-                    item[1]
-                ))
-            })
-            return Promise.resolve(out)
+            let raw = <string>await Exec.async("wmic printer list brief")
+            return CmdPrinter.rawToInst(raw)
         
         } catch(err) {
             return Promise.reject("Unable to parse the string data into a Table Data")
         }
+    }
+
+    //propiedades estáticas
+    public static getAllSync(): CmdPrinter[] {
+        try {
+            let raw = <string>Exec.sync("wmic printer list brief")
+            return CmdPrinter.rawToInst(raw)
+            
+        } catch(err) {
+            throw new Error("Unable to parse the string data into a Table Data")
+        }
+    }
+
+    private static rawToInst(raw: string) {
+        let table = Parser.shellTable(raw)
+
+        //Obtener Parámetros
+        let out: CmdPrinter[] = []
+        table.row.forEach(item => {
+            if (item[4] == null) {
+                out.push(new CmdPrinter(
+                    item[5],
+                    item[1]
+                ))
+            } else {
+                out.push(new CmdPrinter(
+                    item[5],
+                    item[4]
+                ))
+            }
+        })
+
+        return out
     }
 
     public static async getByName(name: string): Promise<CmdPrinter | null> {
@@ -44,22 +63,6 @@ export class CmdPrinter{
         } catch(err) {
             return Promise.reject(err)
         }
-    }
-    //propiedades estáticas
-    public static getAllSync(): CmdPrinter[] {
-        let raw = <string>Exec.sync("wmic printer list brief")
-        let table = Parser.shellTable(raw)
-
-        //Obtener Parámetros
-        let out: CmdPrinter[] = []
-        table.row.forEach(item => {
-            out.push(new CmdPrinter(
-                item[0],
-                item[1]
-            ))
-        })
-
-        return out
     }
 
     public static getByNameSync(name: string): CmdPrinter | null {

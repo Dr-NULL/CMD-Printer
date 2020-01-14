@@ -1,7 +1,7 @@
 import { resolve } from 'path';
 import { execSync } from 'child_process';
 
-export interface iOptions<>{
+export interface iOptions{
     [key: string]: any;
 
     adjust?: 'noscale' | 'shrink' | 'fit';

@@ -93,7 +93,7 @@ export class CmdPrinter{
     }
     
     private constructor(location: string, name: string) {
-        this._location = location
+        this._location = location.replace(/(^(\\|\/)+|(\\|\/)+$)/gi, '')
         this._name = name
     }
 

@@ -1,7 +1,7 @@
 import * as child from "child_process"
 import iconv from "iconv-lite"
 
-module Exec{
+export module Exec{
     export let  sync = (cmd: string) => {
         const make = makeCmd(cmd)
         const proc = child.spawnSync(make.cmd, make.arg)

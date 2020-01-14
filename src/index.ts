@@ -1,9 +1,8 @@
 import Exec from "./tool/exec"
 import Parser from "./tool/parser"
-import * as child from "child_process"
-import { resolve } from 'path';
+import * as SumatraPDF from "./tool/sumatra-pdf"
 
-class CmdPrinter{
+export class CmdPrinter{
     //propiedades estáticas
     public static async getAll(): Promise<CmdPrinter[]> {
         //Ejecución del proceso en paralelo
@@ -76,22 +75,8 @@ class CmdPrinter{
         return item
     }
 
-    public static async printRemote(path: string, location: string, name: string): Promise<void>{
-        let cmd = `${this.getExe()} "${path}" "\\\\${location}\\${name}"`
-
-        let proc = child.exec(cmd, (err, out) => {
-            if (err != null) {
-                return Promise.reject(err)
-            } else {
-                return Promise.resolve()
-            }
-        })
-    }
-
-    public static printRemoteSync(path: string, location: string, name: string): void {
-        let cmd = `${this.getExe()} "${path}" "\\\\${location}\\${name}"`
-
-        child.execSync(cmd)
+    public static printRemote(path: string, location: string, printerName: string, options?: SumatraPDF.iOptions): void {
+        SumatraPDF.printRemote(path, location, printerName, options)
     }
     
     private _location : string;
@@ -109,30 +94,8 @@ class CmdPrinter{
         this._name = name
     }
 
-    public async print(path: string): Promise<void>{
-        let cmd = `${CmdPrinter.getExe()} "${path}" "${this._name}"`
-
-        let proc = child.exec(cmd, (err, out) => {
-            if (err != null) {
-                return Promise.reject(err)
-            } else {
-                return Promise.resolve()
-            }
-        })
-    }
-
-    public printSync(path: string): void {
-        let cmd = `${CmdPrinter.getExe()} "${path}" "${this._name}"`
-
-        child.execSync(cmd)
-    }
-
-    private static getExe() {
-        return resolve(
-            __dirname,
-            "..",
-            "PDFtoPrinter.exe"
-        )
+    public print(path: string, options?: SumatraPDF.iOptions): void {
+        SumatraPDF.printLocal(path, this._name, options)
     }
 }
 export default CmdPrinter

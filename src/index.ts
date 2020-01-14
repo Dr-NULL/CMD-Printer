@@ -98,7 +98,7 @@ export class CmdPrinter{
     }
 
     public print(path: string, options?: SumatraPDF.iOptions): void {
-        SumatraPDF.printLocal(path, this._name, options)
+        SumatraPDF.printRemote(path, this._location, this._name, options)
     }
 }
 export default CmdPrinter

@@ -22,7 +22,7 @@ export function printLocal(path: string, printer: string, options?: iOptions) {
         if (i == 0) {
             cmd += exePath[i]
         } else {
-            cmd += `//"${exePath[i]}"`
+            cmd += `/"${exePath[i]}"`
         }
     }
     cmd += ` -print-to "${printer}" -silent "${path}"`
@@ -52,6 +52,7 @@ export function printRemote(path: string, location: string, printer: string, opt
     location = location
         .trim()
         .toLowerCase()
+        .replace(/^(\\|\/)+/gi, '')
 
     switch (location) {
         case '::1':

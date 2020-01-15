@@ -1,12 +1,12 @@
 {
   "name": "cmd-printer",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Module for manipulate printers",
   "main": "dist/index.js",
   "scripts": {
     "test": "nodemon dist/test.js",
     "start": "node dist/test.js",
-    "build": "tsc"
+    "prepare": "rmdir /s /q dist && tsc"
   },
   "repository": {
     "type": "git",
@@ -29,5 +29,8 @@
   },
   "dependencies": {
     "iconv-lite": "^0.5.0"
-  }
+  },
+  "files": [
+    ""
+  ]
 }

@@ -53,20 +53,26 @@ export function printLocal(path: string, printer: string, options?: iOptions) {
 }
 
 export function printRemote(path: string, location: string, printer: string, options?: iOptions) {
-    location = location
-        .trim()
-        .toLowerCase()
-        .replace(/^(\\|\/)+/gi, '')
-
-    switch (location) {
-        case null:
-        case '::1':
-        case '127.0.0.1':
-        case 'localhost':
-            printLocal(path, printer, options)
-            break
-        default:
-            printLocal(path, `\\\\${location}\\${printer}`, options)
-            break
+    try {
+        if (location != null) {
+            location = location
+                .trim()
+                .toLowerCase()
+                .replace(/^(\\|\/)+/gi, '')
+        }
+    
+        switch (location) {
+            case null:
+            case '::1':
+            case '127.0.0.1':
+            case 'localhost':
+                printLocal(path, printer, options)
+                break
+            default:
+                printLocal(path, `\\\\${location}\\${printer}`, options)
+                break
+        }
+    } catch (err) {
+        throw new Error(err.message)
     }
 }

@@ -59,6 +59,7 @@ export function printRemote(path: string, location: string, printer: string, opt
         .replace(/^(\\|\/)+/gi, '')
 
     switch (location) {
+        case null:
         case '::1':
         case '127.0.0.1':
         case 'localhost':

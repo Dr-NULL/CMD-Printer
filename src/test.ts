@@ -1,8 +1,9 @@
 import { CmdPrinter } from ".";
 
-let test = CmdPrinter.getByNameSync("BIXOLON SRP-350III")
-test.print(
+CmdPrinter.printRemote(
     "C:\\Users\\felipe.silva\\Desktop\\Test SumatraPDF\\test.pdf",
+    null,
+    'printerTotem_Z_Development',
     {
         adjust: 'noscale',
         color: 'monocrome',

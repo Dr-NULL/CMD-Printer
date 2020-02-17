@@ -2,18 +2,9 @@ import { CmdPrinter } from ".";
 import { join } from "path";
 
 try {
-    CmdPrinter.printRemote(
-        join(__dirname, "..", "test", "test.pdf"),
-        null,
-        'printerTotem_Z_Development',
-        {
-            adjust: 'noscale',
-            color: 'monocrome',
-            mode: 'simplex',
-            skip: 'odd',
-            cant: 1
-        }
-    )
+    const filename = join(__dirname, "..", "test", "test.pdf")
+    const printer = CmdPrinter.getByNameSync('ZDesigner_Test')
+    printer.print(filename)
 } catch (err) {
     console.error(err);
 }

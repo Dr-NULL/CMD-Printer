@@ -1,5 +1,5 @@
 import { resolve } from 'path';
-import { execSync } from 'child_process';
+import { exec } from 'child_process';
 
 export interface iOptions{
     [key: string]: any;
@@ -44,8 +44,18 @@ export function printLocal(path: string, printer: string, options?: iOptions) {
     }
 
     try {
-        execSync(cmd, {
-            encoding: 'utf8'
+        return new Promise((resolve, reject) => {
+            const child = exec(cmd, {
+                encoding: 'utf8'
+            })
+
+            child.on('exit', (code) => {
+                if (code == 0) {
+                    resolve();
+                } else {
+                    reject();
+                }
+            })
         })
     } catch(err) {
         throw new Error(`The printer "${printer}" it's not found!`)

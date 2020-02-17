@@ -47,8 +47,6 @@ export function printLocal(path: string, printer: string, options?: iOptions) {
         const proc = exec(cmd, { encoding: 'utf8' })
 
         proc.on('exit', code => {
-            console.log(`status -> ${code}`)
-
             if (code == 0) {
                 resolve()
             } else {

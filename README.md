@@ -1,6 +1,6 @@
 # CMD-Printer
 
-This module contains some utilities for print PDF, using [SumatraPDF](https://github.com/sumatrapdfreader/sumatrapdf). It's written in Typescript and has its own declaration files (*.d.ts). This project for now runs only on Windows.
+This module contains some utilities for printing PDF, using [SumatraPDF](https://github.com/sumatrapdfreader/sumatrapdf). It's written in Typescript and has its own declaration files (*.d.ts). This project for now, runs only on Windows.
 
 For implement this module into your project, install using **npm**:
 ```
@@ -52,10 +52,10 @@ testSync()
 
 ### Printing with a Remote printer
 
-If your printer is installed in another device, and it's available into the network, you can use that printer satisfacing some requeriments:
-- The drivers are installed in the current device.
-- The IP (or machine name) it's known.
-- The Printer name also it's known too.
+If your printer is installed in another device, and it's available on the network, you can use that printer satisfacing some requeriments:
+- The drivers must be installed in the current device.
+- The IP (or machine name) has to been known.
+- You have to know the name of the priner.
 
 In that case:
 ```typescript

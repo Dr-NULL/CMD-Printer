@@ -1,5 +1,5 @@
 import { resolve } from 'path';
-import { exec } from 'child_process';
+import { exec, execSync } from 'child_process';
 
 export interface iOptions{
     [key: string]: any;
@@ -43,26 +43,22 @@ export function printLocal(path: string, printer: string, options?: iOptions) {
         cmd += '"'
     }
 
-    try {
-        return new Promise((resolve, reject) => {
-            const child = exec(cmd, {
-                encoding: 'utf8'
-            })
+    return new Promise((resolve, reject) => {
+        const proc = exec(cmd, { encoding: 'utf8' })
 
-            child.on('exit', (code) => {
-                if (code == 0) {
-                    resolve();
-                } else {
-                    reject();
-                }
-            })
+        proc.on('exit', code => {
+            console.log(`status -> ${code}`)
+
+            if (code == 0) {
+                resolve()
+            } else {
+                reject(new Error(`The printer "${printer}" it's not found!`))
+            }
         })
-    } catch(err) {
-        throw new Error(`The printer "${printer}" it's not found!`)
-    }
+    })
 }
 
-export function printRemote(path: string, location: string, printer: string, options?: iOptions) {
+export async function printRemote(path: string, location: string, printer: string, options?: iOptions) {
     try {
         if (location != null) {
             location = location
@@ -76,10 +72,10 @@ export function printRemote(path: string, location: string, printer: string, opt
             case '::1':
             case '127.0.0.1':
             case 'localhost':
-                printLocal(path, printer, options)
+                await printLocal(path, printer, options)
                 break
             default:
-                printLocal(path, `\\\\${location}\\${printer}`, options)
+                await printLocal(path, `\\\\${location}\\${printer}`, options)
                 break
         }
     } catch (err) {

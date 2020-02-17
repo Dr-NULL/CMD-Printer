@@ -97,8 +97,8 @@ export class CmdPrinter{
         this._name = name
     }
 
-    public print(path: string, options?: SumatraPDF.iOptions): void {
-        SumatraPDF.printRemote(path, this._location, this._name, options)
+    public async print(path: string, options?: SumatraPDF.iOptions) {
+        await SumatraPDF.printRemote(path, this._location, this._name, options)
     }
 }
 export default CmdPrinter

@@ -1,6 +1,6 @@
 {
   "name": "cmd-printer",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Module for manipulate printers",
   "main": "dist/index.js",
   "scripts": {
@@ -24,11 +24,11 @@
   },
   "homepage": "https://github.com/Dr-NULL/CMD-Printer#readme",
   "devDependencies": {
-    "@types/node": "^12.12.24",
-    "nodemon": "^1.19.4"
+    "@types/node": "^13.11.0",
+    "nodemon": "^2.0.2"
   },
   "dependencies": {
-    "iconv-lite": "^0.5.0"
+    "iconv-lite": "^0.5.1"
   },
   "files": [
     "dist",

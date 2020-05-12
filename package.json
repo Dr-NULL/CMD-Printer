@@ -1,6 +1,6 @@
 {
   "name": "cmd-printer",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Module for manipulate printers",
   "main": "dist/index.js",
   "scripts": {

@@ -1,6 +1,6 @@
 {
   "name": "cmd-printer",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Module for manipulate printers",
   "main": "dist/index.js",
   "scripts": {
@@ -32,6 +32,7 @@
   },
   "files": [
     "dist",
-    "SumatraPDF.exe"
+    "bin/SumatraPDF.exe",
+    "bin/PDFtoPrinter.exe"
   ]
 }

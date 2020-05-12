@@ -80,7 +80,6 @@ export class CmdPrinter {
   }
 
   public static async printRemote(path: string, location: string, printerName: string, options?: SumatraPDF.iOptions) {
-    SumatraPDF.printRemote(path, location, printerName, options)
     if (options) {
       await SumatraPDF.printRemote(path, location, printerName, options)
     } else {

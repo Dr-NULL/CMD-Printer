@@ -61,11 +61,10 @@ export async function printRemote(path: string, location: string, printer: strin
     if (location != null) {
       location = location
         .trim()
-        .toLowerCase()
         .replace(/^(\\|\/)+/gi, '')
     }
 
-    switch (location) {
+    switch (location.toLowerCase()) {
       case null:
       case '::1':
       case '127.0.0.1':

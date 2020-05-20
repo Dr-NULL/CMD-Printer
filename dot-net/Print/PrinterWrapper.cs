@@ -15,37 +15,58 @@ namespace CMD_Printer.Print {
         public int MarginBottom { get; set; }
         public int MarginLeft { get; set; }
         public int MarginRight { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
         public PrintEventHandler OnBeginPrint { get; set; }
         public PrintEventHandler OnEndPrint { get; set; }
 
         public PrinterWrapper(string path, string printer) {
+            // Reference
+            PdfDocument self = new PdfDocument();
+            self.LoadFromFile(path);
+
             // Main Reference
             Path = path;
             Printer = printer;
 
             // Set Default Adjustment
-            Orientation = OptionOrientation.Portrait;
             PageScale = OptionPageScale.FitSize;
+            switch (self.PageSettings.Orientation) {
+                case PdfPageOrientation.Portrait:
+                    Orientation = OptionOrientation.Portrait;
+                    break;
+                case PdfPageOrientation.Landscape:
+                    Orientation = OptionOrientation.Landscape;
+                    break;
+            }
 
             // Set Margin
             MarginTop = 0;
             MarginBottom = 0;
             MarginLeft = 0;
             MarginRight = 0;
+
+            // Set Size
+            int[] dim = new int[2]{
+                (int)self.PageSettings.Width,
+                (int)self.PageSettings.Height
+            };
+
+            if (self.PageSettings.Transition.Dimension == PdfTransitionDimension.Horizontal) {
+                Width = ToMilim((dim[0] > dim[1]) ? dim[0] : dim[1]);
+                Height = ToMilim((dim[0] > dim[1]) ? dim[1] : dim[0]);
+            } else {
+                Width = ToMilim((dim[0] < dim[1]) ? dim[0] : dim[1]);
+                Height = ToMilim((dim[0] < dim[1]) ? dim[1] : dim[0]);
+            }
+
+            self.Dispose();
         }
 
         public void Print() {
             PdfDocument self = new PdfDocument();
             self.LoadFromFile(Path);
             self.PrintSettings.PrinterName = this.Printer.Replace(@"/", @"\");
-            
-            // Set Margins
-            self.PrintSettings.SetPaperMargins(
-                this.MarginTop,
-                this.MarginBottom,
-                this.MarginLeft,
-                this.MarginRight
-            );
 
             // Set Page Scale
             PdfSinglePageScalingMode scale = PdfSinglePageScalingMode.ActualSize;
@@ -80,6 +101,11 @@ namespace CMD_Printer.Print {
             if (OnEndPrint != null) {
                 self.PrintSettings.EndPrint += OnEndPrint;
             }
+
+            self.PrintSettings.PaperSize = new PaperSize {
+                Width = ToCentinch(Width),
+                Height = ToCentinch(Height)
+            };
 
             // Print
             self.Print();
@@ -131,7 +157,7 @@ namespace CMD_Printer.Print {
                     MarginLeft = margin[0];
                     MarginBottom = margin[0];
                     MarginRight = margin[0];
-                } else if(margin.Count == 2) {
+                } else if (margin.Count == 2) {
                     MarginTop = margin[0];
                     MarginLeft = margin[1];
                     MarginBottom = margin[0];
@@ -143,19 +169,14 @@ namespace CMD_Printer.Print {
                     MarginRight = margin[3];
                 }
             }
-
-            // Parsing Size
-            args.ParamData.TryGetValue("size", out List<string> rawSize);
-            if (rawSize == null) {
-            }
         }
 
         private int ToCentinch(int input) {
-            return (int)((input / 25.4) * 100);
+            return (int)(((float)input / (float)15) * 842);
         }
 
         private int ToMilim(int input) {
-            return (int)((input / 100) * 25.4);
+            return (int)(((float)input / (float)842) * 15);
         }
     }
 }

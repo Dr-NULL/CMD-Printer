@@ -2,7 +2,7 @@
   "profiles": {
     "CMD-Printer": {
       "commandName": "Project",
-      "commandLineArgs": "--printers \"//NB-FSILVA/EasyCoder PX4i (203 dpi) - DP 100 x 150\" --files \"C:\\Projects\\NodeJS\\Anzio-Etiquetas\\data\\pdf\\2020051911362957922521895.pdf\" --verbose"
+      "commandLineArgs": "--printers \"//NB-FSILVA/EasyCoder PX4i (203 dpi) - DP 100 x 150\" \"//NB-FSILVA/ZDesigner ZT410 203dpi 100 x 150\" --files \"C:\\Projects\\NodeJS\\CMD Printer\\node-js\\test\\test-15x10.pdf\" --verbose"
     }
   }
 }

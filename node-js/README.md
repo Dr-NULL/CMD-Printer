@@ -17,13 +17,13 @@ Before compile the project, you must install some dependencies:
 - Node.js
 - Typescript 
 
+### Build:
 
+Transpile *.ts files and compile the executables:
 ```console
 foo@bar:~$ cd ./node-js
 foo@bar:~$ npm run prepare
 ```
-
-If you wa
 
 ## Usage
 

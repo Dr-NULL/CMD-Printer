@@ -1,12 +1,29 @@
 # CMD-Printer
 
-This module contains some utilities for printing PDF, using [SumatraPDF](https://github.com/sumatrapdfreader/sumatrapdf). It's written in Typescript and has its own declaration files (*.d.ts). This project for now, runs only on Windows.
+This package contains utilities for locate and print pdf documents, using a own dotNET client (implements Free Spire NuGET lib). The client is located into the `.\dot-net` folder, and the npm package is into `.\node-js` folder.
 
 For implement this module into your project, install using **npm**:
 ```
 npm install --save cmd-printer
 ```
 
+## Build
+
+Before compile the project, you must install some dependencies:
+
+### Prerequisites:
+- Visual Studio 2019 or higher.
+- dotNET Core 3.1
+- Node.js
+- Typescript 
+
+
+```console
+foo@bar:~$ cd ./node-js
+foo@bar:~$ npm run prepare
+```
+
+If you wa
 
 ## Usage
 
@@ -26,7 +43,7 @@ let testAsync = async () => {
     let zebra = await CmdPrinter.getByName("ZDesigner_Test")
 
     //Print a Document (always sync)
-    await zebra.print(`test/test.pdf`)
+    await zebra.print([ `test/test.pdf` ])
 }
 testAsync()
 ```
@@ -62,9 +79,16 @@ In that case:
 import { CmdPrinter } from "cmd-printer";
 
 CmdPrinter.printRemote(
-    'path of the file',
-    'ip or machine_name',
-    'printer name'
+    [
+      'path/of/file/01',
+      'path/of/file/02',
+      'path/of/file/03'
+    ],
+    [
+      'location/printer-name-01',
+      'location/printer-name-02',
+      'location/printer-name-03'
+    ]
 )
 ```
 

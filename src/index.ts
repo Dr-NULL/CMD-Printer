@@ -34,17 +34,7 @@ export class CmdPrinter {
 
     let out: CmdPrinter[] = []
     table.row.forEach(item => {
-      if (item[4] == null) {
-        out.push(new CmdPrinter(
-          item[5],
-          item[1]
-        ))
-      } else {
-        out.push(new CmdPrinter(
-          item[5],
-          item[4]
-        ))
-      }
+      out.push(new CmdPrinter(item[1]))
     })
 
     return out
@@ -69,24 +59,33 @@ export class CmdPrinter {
   public static getByNameSync(name: string): CmdPrinter | null {
     let data = this.getAllSync()
     let item: CmdPrinter | null = null
+    let arr = name
+      .split(/[\\\/]/gi)
+      .filter(x => !x.match(/[\\\/]/gi))
+
+    let reg: RegExp;
+    if (arr.length > 1) {
+      reg = new RegExp(`${arr[0]}.${arr[1]}`, 'gi')
+    }
 
     data.forEach(printer => {
-      if (printer.name == name) {
-        item = printer
+      if (reg) {
+        if (printer.name.match(reg)) {
+          item = printer
+        }
+      } else {
+        if (printer.name == name) {
+          item = printer
+        }
       }
     })
 
     return item
   }
 
-  public static async printRemote(printer: string, files: string[], options?: Options) {
+  public static print(printer: string, files: string[], options?: Options) {
     const sumatra = new Wrapper()
-    sumatra.print(printer, files, options)
-  }
-
-  private _location: string;
-  public get location(): string {
-    return this._location;
+    return sumatra.print(printer, files, options)
   }
 
   private _name: string;
@@ -94,14 +93,13 @@ export class CmdPrinter {
     return this._name;
   }
 
-  private constructor(location: string, name: string) {
-    this._location = location.replace(/(^(\\|\/)+|(\\|\/)+$)/gi, '')
+  private constructor(name: string) {
     this._name = name
   }
 
-  public async print(files: string[], options?: Options) {
+  public print(files: string[], options?: Options) {
     const sumatra = new Wrapper()
-    sumatra.print(`//${this._location}/${this._name}`, files, options)
+    return sumatra.print(this._name, files, options)
   }
 }
 export default CmdPrinter

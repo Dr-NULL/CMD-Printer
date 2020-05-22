@@ -72,9 +72,6 @@ export class Wrapper {
   }
 
   private execute(cmd: string) {
-    console.log('command:')
-    console.log(cmd)
-
     return new Promise<void>((resolve, reject) => {
       const proc = exec(cmd.trim(), { encoding: 'utf8' })
       proc.on('exit', (code) => {

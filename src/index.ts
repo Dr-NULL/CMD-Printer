@@ -1,11 +1,15 @@
+import { Wrapper } from './lib/wrapper';
+import { Options } from './lib/options';
 import { Parser } from "./tool/parser"
-import { print } from "./tool/print"
 import { Exec } from "./tool/exec"
 
+export {
+  Wrapper,
+  Options
+};
+
 export class CmdPrinter {
-  //propiedades estáticas
   public static async getAll(): Promise<CmdPrinter[]> {
-    //Obtener Parámetros
     try {
       let raw = <string>await Exec.async("wmic printer list brief")
       return CmdPrinter.rawToInst(raw)
@@ -15,7 +19,6 @@ export class CmdPrinter {
     }
   }
 
-  //propiedades estáticas
   public static getAllSync(): CmdPrinter[] {
     try {
       let raw = <string>Exec.sync("wmic printer list brief")
@@ -29,7 +32,6 @@ export class CmdPrinter {
   private static rawToInst(raw: string) {
     let table = Parser.shellTable(raw)
 
-    //Obtener Parámetros
     let out: CmdPrinter[] = []
     table.row.forEach(item => {
       if (item[4] == null) {
@@ -77,8 +79,9 @@ export class CmdPrinter {
     return item
   }
 
-  public static async printRemote(files: string[], printers: string[]) {
-    await print(files, printers)
+  public static async printRemote(printer: string, files: string[], options?: Options) {
+    const sumatra = new Wrapper()
+    sumatra.print(printer, files, options)
   }
 
   private _location: string;
@@ -96,8 +99,9 @@ export class CmdPrinter {
     this._name = name
   }
 
-  public async print(files: string[]) {
-    await print(files,  [`\\\\${this._location}\\${this._name}`])
+  public async print(files: string[], options?: Options) {
+    const sumatra = new Wrapper()
+    sumatra.print(`//${this._location}/${this._name}`, files, options)
   }
 }
 export default CmdPrinter

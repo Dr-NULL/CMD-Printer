@@ -1,28 +1,10 @@
 # CMD-Printer
 
-This package contains utilities for locate and print pdf documents, using a own dotNET client (implements Free Spire NuGET lib). The client is located into the `.\dot-net` folder, and the npm package is into `.\node-js` folder.
+This package contains utilities for locate and print pdf documents, using SumatraPDF. The library works on Windows, and internally it's a command wrapper for SumatraPDF. Support multiple documents at a same printer and sending arguments for a custom configuration. 
 
 For implement this module into your project, install using **npm**:
 ```
 npm install --save cmd-printer
-```
-
-## Build
-
-Before compile the project, you must install some dependencies:
-
-### Prerequisites:
-- Visual Studio 2019 or higher.
-- dotNET Core 3.1
-- Node.js
-- Typescript 
-
-### Build:
-
-Transpile *.ts files and compile the executables:
-```console
-foo@bar:~$ cd ./node-js
-foo@bar:~$ npm run prepare
 ```
 
 ## Usage
@@ -36,14 +18,14 @@ import { CmdPrinter } from "cmd-printer"
 
 //test Async
 let testAsync = async () => {
-    //List all printers
-    let list = await CmdPrinter.getAll()
+  //List all printers
+  let list = await CmdPrinter.getAll()
 
-    //Getting a especified printer
-    let zebra = await CmdPrinter.getByName("ZDesigner_Test")
+  //Getting a especified printer
+  let zebra = await CmdPrinter.getByName("ZDesigner_Test")
 
-    //Print a Document (always sync)
-    await zebra.print([ `test/test.pdf` ])
+  //Print a Document (always sync)
+  await zebra.print([ `test/100x150.pdf` ])
 }
 testAsync()
 ```
@@ -55,14 +37,14 @@ import { CmdPrinter } from "cmd-printer"
 
 //test Async
 let testSync = () => {
-    //List all printers
-    let list = CmdPrinter.getAllSync()
+  //List all printers
+  let list = CmdPrinter.getAllSync()
 
-    //Getting a especified printer
-    let zebra = CmdPrinter.getByNameSync("ZDesigner_Test")
+  //Getting a especified printer
+  let zebra = CmdPrinter.getByNameSync("ZDesigner_Test")
 
-    //Print a Document (always sync)
-    zebra.print(`test/test.pdf`)
+  //Print a Document (always sync)
+  zebra.print([ `test/100x150.pdf` ])
 }
 testSync()
 ```
@@ -79,16 +61,12 @@ In that case:
 import { CmdPrinter } from "cmd-printer";
 
 CmdPrinter.printRemote(
-    [
-      'path/of/file/01',
-      'path/of/file/02',
-      'path/of/file/03'
-    ],
-    [
-      'location/printer-name-01',
-      'location/printer-name-02',
-      'location/printer-name-03'
-    ]
+  'location/printer-name',
+  [
+    'path/of/file/01',
+    'path/of/file/02',
+    'path/of/file/03'
+  ]
 )
 ```
 
@@ -106,13 +84,13 @@ import { CmdPrinter } from "cmd-printer";
 
 let test = CmdPrinter.getByNameSync("BIXOLON SRP-350III")
 test.print(
-    "C:\\Users\\test_user\\Desktop\\test.pdf",
-    {
-        adjust: 'noscale',
-        color: 'monocrome',
-        mode: 'simplex',
-        skip: 'odd',
-        cant: 1
-    }
+  [ 'C:\\Users\\test_user\\Desktop\\test.pdf' ],
+  {
+    adjust: 'noscale',
+    color: 'monocrome',
+    mode: 'simplex',
+    skip: 'odd',
+    cant: 1
+  }
 )
 ```

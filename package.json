@@ -6,7 +6,7 @@
   "scripts": {
     "test": "nodemon dist/test.js",
     "start": "node dist/test.js",
-    "prepare": ".\\compile.bat"
+    "prepare": "tsc"
   },
   "repository": {
     "type": "git",

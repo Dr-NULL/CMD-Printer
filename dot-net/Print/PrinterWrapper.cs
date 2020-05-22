@@ -87,6 +87,10 @@ namespace CMD_Printer.Print {
             self.PrintSettings.SelectSinglePageLayout(scale);
 
             // Set Margin
+            self.PageSettings.Margins.Top = ToCentinch(MarginTop);
+            self.PageSettings.Margins.Bottom = ToCentinch(MarginBottom);
+            self.PageSettings.Margins.Left = ToCentinch(MarginLeft);
+            self.PageSettings.Margins.Right = ToCentinch(MarginRight);
             self.PrintSettings.SetPaperMargins(
                 ToCentinch(MarginTop),
                 ToCentinch(MarginBottom),

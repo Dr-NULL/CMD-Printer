@@ -62,7 +62,7 @@ export class Wrapper {
           printer = '\\\\' + printer
         }
         
-        cmd += `"${printer}"`
+        cmd += `"${printer}" -silent`
         cmd += (opt) ? ` -print-settings "${opt}"` : '' 
         this.execute(cmd)
       }

@@ -24,51 +24,55 @@ export class Wrapper {
   }
 
   public async print(printer: string, files: string[], options?: Options) {
-    try {
-      // Make Options
-      let opt = null
-      if (options) {
-        opt = ''
-        if (options.cant) {
-          opt += `${options.cant}x,`
-        }
-
-        if (options.skip) {
-          opt += `${options.skip},`
-        }
-
-        if (options.mode) {
-          opt += `${options.mode},`
-        }
-
-        if (options.color) {
-          opt += `${options.color},`
-        }
-
-        opt = opt.replace(/,$/gi, '')
-      }
-
-      for (const file of files) {
-        // Build Command
-        let cmd =
-            this.quotePath(this.path) + ' '
-          + this.quotePath(file) + ' '
-          + '-print-to '
-  
-        // Format print
-        if (printer.match(/[\\\/]/gi)) {
-          printer = printer.replace(/\//gi, '\\')
-          printer = printer.replace(/^\\+/gi, '')
-          printer = '\\\\' + printer
+    return new Promise<void>(async (resolve, reject) => {
+      try {
+        // Make Options
+        let opt = null
+        if (options) {
+          opt = ''
+          if (options.cant) {
+            opt += `${options.cant}x,`
+          }
+    
+          if (options.skip) {
+            opt += `${options.skip},`
+          }
+    
+          if (options.mode) {
+            opt += `${options.mode},`
+          }
+    
+          if (options.color) {
+            opt += `${options.color},`
+          }
+    
+          opt = opt.replace(/,$/gi, '')
         }
         
-        cmd += `"${printer}" -silent`
-        cmd += (opt) ? ` -print-settings "${opt}"` : '' 
-        this.execute(cmd)
+        for (const file of files) {
+          // Build Command
+          let cmd =
+            this.quotePath(this.path) + ' '
+            + this.quotePath(file) + ' '
+            + '-print-to '
+    
+          // Format print
+          if (printer.match(/[\\\/]/gi)) {
+            printer = printer.replace(/\//gi, '\\')
+            printer = printer.replace(/^\\+/gi, '')
+            printer = '\\\\' + printer
+          }
+    
+          cmd += `"${printer}" -silent`
+          cmd += (opt) ? ` -print-settings "${opt}"` : ''
+          await this.execute(cmd)
+        }
+
+        resolve()
+      } catch (err) {
+        reject(err.message)
       }
-    } catch (err) {
-      throw new Error(err.message)
-    }
+    })
   }
 
   private execute(cmd: string) {

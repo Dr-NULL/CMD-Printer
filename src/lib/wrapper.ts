@@ -82,7 +82,7 @@ export class Wrapper {
         if (code === 0) {
           resolve();
         } else {
-          reject()
+          reject(new Error('The printing request was finished with a error status.'))
         }
       })
     })

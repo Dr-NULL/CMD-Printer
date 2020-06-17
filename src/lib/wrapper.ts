@@ -70,7 +70,7 @@ export class Wrapper {
 
         resolve()
       } catch (err) {
-        reject(err.message)
+        reject(err)
       }
     })
   }

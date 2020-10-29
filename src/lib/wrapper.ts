@@ -7,7 +7,7 @@ export class Wrapper {
 
 
   public constructor() {
-    this.path = join(__dirname, '..', '..', 'bin', 'SumatraPDF.exe')
+    this.path = process.env.CMD_PRINTER_SUMATRA_PDF_PATH || join(__dirname, '..', '..', 'bin', 'SumatraPDF.exe')
   }
 
   private quotePath(input: string) {
@@ -33,36 +33,36 @@ export class Wrapper {
           if (options.cant) {
             opt += `${options.cant}x,`
           }
-    
+
           if (options.skip) {
             opt += `${options.skip},`
           }
-    
+
           if (options.mode) {
             opt += `${options.mode},`
           }
-    
+
           if (options.color) {
             opt += `${options.color},`
           }
-    
+
           opt = opt.replace(/,$/gi, '')
         }
-        
+
         for (const file of files) {
           // Build Command
           let cmd =
             this.quotePath(this.path) + ' '
             + this.quotePath(file) + ' '
             + '-print-to '
-    
+
           // Format print
           if (printer.match(/[\\\/]/gi)) {
             printer = printer.replace(/\//gi, '\\')
             printer = printer.replace(/^\\+/gi, '')
             printer = '\\\\' + printer
           }
-    
+
           cmd += `"${printer}" -silent`
           cmd += (opt) ? ` -print-settings "${opt}"` : ''
           await this.execute(cmd)

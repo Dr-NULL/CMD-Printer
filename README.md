@@ -70,6 +70,29 @@ CmdPrinter.printRemote(
 )
 ```
 
+### Using a custom SumatraPDF build
+
+If do you want to use a custom SumatraPDF build, you can set an environment variable with the path of your custom build. In this example, the environment varable will be called as __"SUMATRA_PDF_PATH"__:
+```ts
+import { CmdPrinter } from 'cmd-printer';
+import { resolve } from 'path';
+
+async function task() {
+  // Optionally, you can set or edit the value of
+  // this environment variable programatically
+  process.env['SUMATRA_PDF_PATH'] = join('path/to/the/custom/SumatraPDF.exe');
+
+  // Set the variable name as a static property
+  CmdPrinter.envVar = 'SUMATRA_PDF_PATH';
+
+  // Use the library
+  const printer = await CmdPrinter.getByName('Microsoft Print to PDF');
+  await printer.print([ resolve('./test/100x150.pdf') ]);
+}
+
+task();
+```
+
 ### Printer Options
 The methods `instance.print()` and `class.printRemote()` can receive an optional parameter called options. This parameter implements an interface called `iOptions`, and their properties (all optionals) are:
 - __adjust__: `"noscale"`, `"shrink"` or `"fit"`.

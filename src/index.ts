@@ -4,11 +4,31 @@ import { Parser } from "./tool/parser"
 import { Exec } from "./tool/exec"
 
 export {
-  Wrapper,
   Options
 };
 
 export class CmdPrinter {
+  private static _envVar: string;
+  /**
+   * Gets or sets the environment variable that contains a path to a custom SumatraPDF build,
+   * in case do you need it.
+   */
+  public static get envVar(): string {
+    return this._envVar;
+  }
+  public static set envVar(v: string) {
+    this._envVar = v;
+
+    // Check environment variable
+    if (!process.env[this._envVar]) {
+      console.log(
+          `WARNING! -> this environment variable "${this._envVar}" doesn't has any value. `
+        + 'If you want to use an external environment variable for execute a custom SumatraPDF build, '
+        + 'first set this variable before execute a print request.'
+      );
+    }
+  }
+
   public static async getAll(): Promise<CmdPrinter[]> {
     try {
       let raw = <string>await Exec.async("wmic printer list brief")
@@ -84,7 +104,7 @@ export class CmdPrinter {
   }
 
   public static print(printer: string, files: string[], options?: Options) {
-    const sumatra = new Wrapper()
+    const sumatra = new Wrapper(CmdPrinter._envVar)
     return sumatra.print(printer, files, options)
   }
 
@@ -98,7 +118,7 @@ export class CmdPrinter {
   }
 
   public print(files: string[], options?: Options) {
-    const sumatra = new Wrapper()
+    const sumatra = new Wrapper(CmdPrinter._envVar)
     return sumatra.print(this._name, files, options)
   }
 }

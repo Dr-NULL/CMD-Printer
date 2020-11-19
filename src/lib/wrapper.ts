@@ -5,9 +5,19 @@ import { join } from 'path';
 export class Wrapper {
   private path: string;
 
-
-  public constructor() {
-    this.path = join(__dirname, '..', '..', 'bin', 'SumatraPDF.exe')
+  public constructor(envVar?: string) {
+    if (envVar) {
+      if (!process.env[envVar]) {
+        throw new Error(
+            `ERROR! -> You has been set the current environmental variable called "${envVar}", `
+          + `but this variable doesn't has any value. The execution cannot be processed.`
+        );
+      } else {
+        this.path = join(process.env[envVar]);
+      }
+    } else {
+      this.path = join(__dirname, '..', '..', 'bin', 'SumatraPDF.exe');
+    }
   }
 
   private quotePath(input: string) {

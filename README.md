@@ -1,119 +1,143 @@
 # CMD-Printer
 
-This package contains utilities for locate and print pdf documents, using SumatraPDF. The library works on Windows, and internally it's a command wrapper for SumatraPDF. Support multiple documents at a same printer and sending arguments for a custom configuration. 
+This is a package for print PDF to printers settled in the local machine. Designed to work with Windows, using [SumatraPDF](https://www.sumatrapdfreader.org) for print documents, and __Powershell__ commands for lists the available printers. Works with async methods for not block tha main execution thread. For install the package:
+```
+npm i --save cmd-printer
+```
 
-For implement this module into your project, install using **npm**:
-```
-npm install --save cmd-printer
-```
+## Disclaimer
+
+This library uses an executable to print the documents, so it's not designed to be used in frontend applications. Instead, create a backend application, then add a custom endpoint with an implementation of the library. 
 
 ## Usage
+### __Classes__
 
-This module has 2 ways of work, a linear methods collection, or and async operation. By default this module works in async mode, but also has equivalent methods en sync mode.
+The library contains 2 classes, that works together:
+- `CmdPrinter` represents a __Printer__. Has an static method to get all printer instances. You would use this if you want to print with an specific printer.
+- `CmdQueue` executes the print jobs, and determines the behavior of the printer queue.
 
-### Get Printers Async
+### __Print a PDF file__
 
-```typescript
-import { CmdPrinter } from "cmd-printer"
+This is the simplest use of this library. Basically, create a new instance of `CmdQueue`, and execute the method `this.print();`, giving the path's array of the pdfs do you want to print as parameter. If the array given is empty, the `CmdQueue` will throws an `EmptyPrintArrayError` exception.
 
-//test Async
-let testAsync = async () => {
-  //List all printers
-  let list = await CmdPrinter.getAll()
-
-  //Getting a especified printer
-  let zebra = await CmdPrinter.getByName("ZDesigner_Test")
-
-  //Print a Document (always sync)
-  await zebra.print([ `test/100x150.pdf` ])
-}
-testAsync()
-```
-
-### Get Printers Sync
-
-```typescript
-import { CmdPrinter } from "cmd-printer"
-
-//test Async
-let testSync = () => {
-  //List all printers
-  let list = CmdPrinter.getAllSync()
-
-  //Getting a especified printer
-  let zebra = CmdPrinter.getByNameSync("ZDesigner_Test")
-
-  //Print a Document (always sync)
-  zebra.print([ `test/100x150.pdf` ])
-}
-testSync()
-```
-
-### Printing with a Remote printer
-
-If your printer is installed in another device, and it's available on the network, you can use that printer satisfacing some requeriments:
-- The drivers must be installed in the current device.
-- The IP (or machine name) has to been known.
-- You have to know the name of the priner.
-
-In that case:
-```typescript
-import { CmdPrinter } from "cmd-printer";
-
-CmdPrinter.printRemote(
-  'location/printer-name',
-  [
-    'path/of/file/01',
-    'path/of/file/02',
-    'path/of/file/03'
-  ]
-)
-```
-
-### Using a custom SumatraPDF build
-
-If do you want to use a custom SumatraPDF build, you can set an environment variable with the path of your custom build. In this example, the environment varable will be called as __"SUMATRA_PDF_PATH"__:
 ```ts
-import { CmdPrinter } from 'cmd-printer';
-import { resolve } from 'path';
+import { CmdQueue } from 'cmd-printer';
 
-async function task() {
-  // Optionally, you can set or edit the value of
-  // this environment variable programatically
-  process.env['SUMATRA_PDF_PATH'] = join('path/to/the/custom/SumatraPDF.exe');
-
-  // Set the variable name as a static property
-  CmdPrinter.envVar = 'SUMATRA_PDF_PATH';
-
-  // Use the library
-  const printer = await CmdPrinter.getByName('Microsoft Print to PDF');
-  await printer.print([ resolve('./test/100x150.pdf') ]);
+export async function main(): Promise<void> {
+  // Create a new CmdQueue instance
+  const cmd = new CmdQueue();
+  
+  // Print the document using a path array
+  await cmd.print([
+    './test/100x100.pdf',
+    './test/100x150.pdf'
+  ]);
 }
-
-task();
 ```
 
-### Printer Options
-The methods `instance.print()` and `class.printRemote()` can receive an optional parameter called options. This parameter implements an interface called `iOptions`, and their properties (all optionals) are:
-- __adjust__: `"noscale"`, `"shrink"` or `"fit"`.
-- __color__: `"color"` or `"monocrome"`.
-- __mode__: `"duplex"`, `"duplexshort"`, `"duplexlong"` or `"simplex"`.
-- __skip__: `"odd"` or `"even"`.
-- __cant__: A number, if is not provided, the cant = 1.
+### __Print a PDF Buffer__
 
-Example of use:
-```typescript
-import { CmdPrinter } from "cmd-printer";
+If you have a pdf data in a Buffer, you can pass directly the buffer to the `this.print();` method as parameter. _The library will be load the buffer as a __temporaly file___, and destroy the file when the printing process ends.
+```ts
+import { CmdQueue } from 'cmd-printer';
 
-let test = CmdPrinter.getByNameSync("BIXOLON SRP-350III")
-test.print(
-  [ 'C:\\Users\\test_user\\Desktop\\test.pdf' ],
-  {
-    adjust: 'noscale',
-    color: 'monocrome',
-    mode: 'simplex',
-    skip: 'odd',
-    cant: 1
-  }
-)
+export async function print(byteDctos: Buffer[]): Promise<void> {
+  // Create a new CmdQueue instance
+  const cmd = new CmdQueue();
+  
+  // Print the buffer
+  await cmd.print(byteDctos);
+}
+```
+
+### __Using a custom printer__
+
+By default, a `CmdQueue` instance prints documents to the default system printer, using the default printer configuration. If do you want to change the printer, you can use `CmdPrinter` class to get all installed printers, and select one programatically.
+```ts
+import { CmdPrinter, CmdQueue } from 'cmd-printer';
+
+export async function main(): Promise<void> {
+  // Get all printers installed in the system as Array
+  const printers = await CmdPrinter.getAll();
+
+  // Select one using "this.map();" method
+  const printer = printers.find(x => x.shared);
+
+  // Create a new CmdQueue instance with the desired printer
+  const cmd = new CmdQueue({ printTo: printer });
+
+  // Print the document
+  await cmd.print([ './test/100x100.pdf' ]);
+}
+```
+
+### __Override the default configuration__
+
+If you want to set the printing options, you can change the default settings in the constructor, or manipulating the `this.options` property.
+```ts
+import { CmdQueue } from 'cmd-printer';
+
+export async function main(): Promise<void> {
+  // Create a new CmdQueue instance
+  const cmd = new CmdQueue({
+    orientation: 'landscape',   // The orientation of the page
+    silent: true,               // Don't show errors or warnings
+    scale: 'fit'                // Size adjustment
+  });
+  
+  // Print the document
+  await cmd.print([ './test/100x100.pdf' ]);
+}
+```
+
+## Printing options
+
+The options available to configure are the following:
+
+- __`silent`: boolean__.
+Silences any error messages related to command line printing. By default is `false`.
+
+- __`printTo`: CmdPrinter__.
+Prints all files indicated to the given printer. After printing, SumatraPDF exits immediately. If this parameter is not specified, the default system setted printer will be used.
+
+- __`scale`: Scale__.
+The size adjustment of the document into the paper. The values admitted are `"noscale"`, `"shrink"` and `"fit"`.
+
+- __`monochrome`: boolean__.
+Prints the document in black and white. By default, this option
+is `false`.
+
+- __`orientation`: Orientation__.
+Can provide 90 degree rotation of contents _(NOT the rotation of
+paper which must be pre-set by the choice of printer defaults)_.
+The values accepted are `"portrait"` and `"landscape"`.
+
+- __`printingMode`: PrintingMode__.
+Available printing modes:
+  - `"duplex"`: Prints the paper in both sides.
+  - `"duplexshort"`: Duplex mode using the shortest edge as flip axis.
+  - `"duplexlong"`: Duplex mode using the longest edge as flip axis.
+  - `"simplex"`: One side printing mode.
+
+- __`paperTray`: string | number__.
+Select a specific paper tray (by index number or by name) for use.
+
+- __`paperSize`: PaperSize__.
+Override the paper size of the document, applying this one instead. The values accepted are `"A2"`, `"A3"`, `"A4"`, `"A5"`, `"A6"`, `"letter"`, `"legal"`, `"tabloid"` or `"statement"`.
+
+- __`half`: Half__.
+Prints only `"odd"` or `"even"` pages of the document.
+
+- __`pages`: (number | PageInterval)[]__.
+Sets the pages do you want to print. Some examples:
+```ts
+// Prints the pages 1, 4, 5
+const cmd = new CmdQueue({
+  pages: [ 1, 4, 5 ]
+});
+
+// Prints page 1, and pages from 3 to 6
+const cmd = new CmdQueue({
+  pages: [ 1, { from: 3, to: 6 } ]
+});
 ```

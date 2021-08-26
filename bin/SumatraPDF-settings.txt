@@ -1,4 +1,4 @@
-﻿# For documentation, see https://www.sumatrapdfreader.org/settings/settings3.2.html
+﻿# For documentation, see https://www.sumatrapdfreader.org/settings/settings3-3-1.html
 
 MainWindowBackground = #80fff200
 EscToExit = false
@@ -13,6 +13,7 @@ FixedPageUI [
 	SelectionColor = #f5fc0c
 	WindowMargin = 2 4 2 4
 	PageSpacing = 4 4
+	HideScrollbars = false
 ]
 EbookUI [
 	FontName = Georgia
@@ -46,6 +47,9 @@ ForwardSearch [
 	HighlightColor = #6581ff
 	HighlightPermanent = false
 ]
+Annotations [
+	HighlightColor = #ffff00
+]
 CustomScreenDPI = 0
 
 RememberStatePerDocument = true
@@ -59,18 +63,39 @@ EnableTeXEnhancements = false
 DefaultDisplayMode = automatic
 DefaultZoom = fit page
 WindowState = 1
-WindowPos = 0 0 0 0
+WindowPos = 512 0 834 1080
 ShowToc = true
 SidebarDx = 0
 TocDy = 0
+TreeFontSize = 0
 ShowStartPage = true
 UseTabs = true
 
 FileStates [
+	[
+		FilePath = C:\Projects\Node.JS\modules\CMD-Printer\test\100x100.pdf
+		Favorites [
+		]
+		IsPinned = false
+		IsMissing = false
+		OpenCount = 2
+		UseDefaultState = false
+		DisplayMode = continuous
+		ScrollPos = -1 -1
+		PageNo = 1
+		Zoom = fit page
+		Rotation = 0
+		WindowState = 1
+		WindowPos = 512 0 834 1080
+		ShowToc = false
+		SidebarDx = 0
+		DisplayR2L = false
+		ReparseIdx = 0
+	]
 ]
 SessionData [
 ]
 TimeOfLastUpdateCheck = 0 0
-OpenCountWeek = 515
+OpenCountWeek = 555
 
 # Settings after this line have not been recognized by the current version

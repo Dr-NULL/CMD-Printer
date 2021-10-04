@@ -13,7 +13,7 @@ This library uses an executable to print the documents, so it's not designed to 
 ### __Classes__
 
 The library contains 2 classes, that works together:
-- `CmdPrinter` represents a __Printer__. Has an static method to get all printer instances. You would use this if you want to print with an specific printer.
+- `CmdPrinter` represents a __Printer__. Has some static methods to get printer instances.
 - `CmdQueue` executes the print jobs, and determines the behavior of the printer queue.
 
 ### __Print a PDF file__
@@ -140,4 +140,31 @@ const cmd = new CmdQueue({
 const cmd = new CmdQueue({
   pages: [ 1, { from: 3, to: 6 } ]
 });
+```
+
+## About CmdPrinter class
+This class represents an individual printer, however also has some static methods to get the desired printers:
+
+### `CmdPrinter.getAll`
+This function returns a promise of `CmdPrinter[]`. In other terms, returns a promise with all printers installed in the current machine. For example:
+```ts
+import { CmdPrinter } from 'cmd-printer';
+
+export async function main(): Promise<void> {
+  // Get all printers installed in the system as Array
+  const printers = await CmdPrinter.getAll();
+  console.log(printers);
+}
+```
+
+### `CmdPrinter.find`
+This function makes a search using a delegate function asynchronously. Returns a promise with the first `CmdPrinter` instance found, or `null` if doesn't found. For example:
+```ts
+import { CmdPrinter } from 'cmd-printer';
+
+export async function main(): Promise<void> {
+  // Get a printer called "Zebra Printer"
+  const printer = await CmdPrinter.find(x => x.name === 'Zebra Printer');
+  console.log(printer);
+}
 ```

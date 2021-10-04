@@ -27,6 +27,16 @@ export class CmdPrinter {
         });
     }
 
+    /**
+     * Finds the first printer that matches with a certain criteria.
+     * @param searchFunct A function with a CmdPrinter reference as argument, and must returns a boolean.
+     * @returns Returns the first CmdPrinter instance found using the `searchFunct` argument if exists.
+     */
+    public static async find(searchFunct: (x: CmdPrinter) => boolean): Promise<CmdPrinter> {
+        const all = await CmdPrinter.getAll();
+        return all.find(searchFunct);
+    }
+
     readonly name: string;
     readonly computerName: string;
     readonly type: number;

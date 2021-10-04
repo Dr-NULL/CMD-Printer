@@ -26,18 +26,18 @@
     "dist",
     "bin"
   ],
+  "devDependencies": {
+    "@types/chai": "^4.2.22",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "^16.10.2",
+    "@types/uuid": "^8.3.1",
+    "chai": "^4.3.4",
+    "mocha": "^9.1.2",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.4.3"
+  },
   "dependencies": {
     "codepage": "^1.15.0",
     "uuid": "^8.3.2"
-  },
-  "devDependencies": {
-    "@types/chai": "^4.2.21",
-    "@types/mocha": "^9.0.0",
-    "@types/node": "^16.7.1",
-    "@types/uuid": "^8.3.1",
-    "chai": "^4.3.4",
-    "mocha": "^9.1.0",
-    "ts-node": "^10.2.1",
-    "typescript": "^4.3.5"
   }
 }

@@ -13,5 +13,5 @@ describe('Testing "./tool/cmd/exec"', () => {
         const resp = await exec('powershell.exe', [ 'ls', path ]);
         assert.match(resp.stdout, /sumatra-pdf-x64\.exe/gi);
         assert.match(resp.stdout, /sumatra-pdf-x86\.exe/gi);
-    });
+    }).timeout(4000);
 });

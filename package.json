@@ -1,6 +1,6 @@
 {
   "name": "cmd-printer",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Module for print PDF using node.js",
   "main": "dist/index.js",
   "scripts": {

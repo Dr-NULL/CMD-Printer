@@ -20,7 +20,7 @@ describe('Testing "./lib/cmd-queue"', () => {
         const cmd = new CmdQueue();
         await cmd.print([
             './test/100x100.pdf',
-            './test/100x150.pdf',
+            './test/150x100.pdf',
         ]);
     }).timeout(Number.MAX_SAFE_INTEGER);
 
@@ -28,7 +28,7 @@ describe('Testing "./lib/cmd-queue"', () => {
         const cmd = new CmdQueue();
         await cmd.print([
             await readFile(resolve('./test/100x100.pdf')),
-            await readFile(resolve('./test/100x150.pdf')),
+            await readFile(resolve('./test/150x100.pdf')),
         ]);
     }).timeout(Number.MAX_SAFE_INTEGER);
 

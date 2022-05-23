@@ -1,2 +1,2 @@
-export { SpawnResponse } from './spawn-response';
-export { ExecResponse } from './exec-response';
+export { SpawnResponse } from './spawn-response.js';
+export { ExecResponse } from './exec-response.js';

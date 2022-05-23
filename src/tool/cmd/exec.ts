@@ -1,9 +1,9 @@
 import { SpawnOptions } from 'child_process';
 import cptable from 'codepage';
 
-import { GetCodePageError } from './errors';
-import { ExecResponse } from './interfaces';
-import { spawn } from './spawn';
+import { GetCodePageError } from './errors/index.js';
+import { ExecResponse } from './interfaces/index.js';
+import { spawn } from './spawn.js';
 
 export async function exec(program: string): Promise<ExecResponse>;
 export async function exec(program: string, args: string[]): Promise<ExecResponse>;
@@ -18,6 +18,8 @@ export async function exec(program: string, arg1?: any, arg2?: any): Promise<Exe
             const txt = raw.stdout.toString('utf-8');
             const num = txt.replace(/[^0-9]/gi, '');
             codePage = parseInt(num, 10);
+        } else if (raw?.stderr) {
+            throw new Error(raw.stderr.toString('utf-8'));
         } else {
             throw new GetCodePageError();
         }

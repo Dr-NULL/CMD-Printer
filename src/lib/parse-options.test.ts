@@ -1,7 +1,8 @@
 import { assert } from 'chai';
-import { CmdPrinter } from './cmd-printer';
-import { parseOptions } from './parse-options';
-import { PrintingOptions } from './interfaces';
+
+import { CmdPrinter } from './cmd-printer.js';
+import { parseOptions } from './parse-options.js';
+import { PrintingOptions } from './interfaces/index.js';
 
 function fakePrinter(name: string, ip?: string) {
     const shared = !!ip;
@@ -9,8 +10,8 @@ function fakePrinter(name: string, ip?: string) {
     const shareName = name;
 
     const out: CmdPrinter = {
-        name, computerName, type: null, driverName: null,
-        portName: null, shared, shareName, published: null
+        name, computerName, type: undefined, driverName: undefined,
+        portName: undefined, shared, shareName, published: undefined
     };
 
     return out;

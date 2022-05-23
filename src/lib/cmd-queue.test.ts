@@ -1,7 +1,8 @@
 import { resolve } from 'path';
 import { readFile } from 'fs/promises';
-import { CmdQueue } from './cmd-queue';
-import { CmdPrinter } from './cmd-printer';
+
+import { CmdQueue } from './cmd-queue.js';
+import { CmdPrinter } from './cmd-printer.js';
 
 describe('Testing "./lib/cmd-queue"', () => {
     it('Print "100x100.pdf" using the file path -> "Default printer"', async () => {

@@ -1,4 +1,4 @@
-import { exec } from '../tool/cmd';
+import { exec } from '../tool/cmd/index.js';
 
 /**
  * Represents a printer installed in the local system.
@@ -12,6 +12,10 @@ export class CmdPrinter {
                 +   'DriverName, PortName, Shared, ShareName, Published | ConvertTo-Json';
 
         const raw = await exec('powershell.exe', [ arg ]);
+        if (typeof raw.stdout !== 'string') {
+            throw new Error('The execution doesn\'t return the JSON required.');
+        }
+
         const out: any[] = JSON.parse(raw.stdout);
         return out.map(x => {
             const obj: any = {};
@@ -32,19 +36,19 @@ export class CmdPrinter {
      * @param searchFunct A function with a CmdPrinter reference as argument, and must returns a boolean.
      * @returns Returns the first CmdPrinter instance found using the `searchFunct` argument if exists.
      */
-    public static async find(searchFunct: (x: CmdPrinter) => boolean): Promise<CmdPrinter> {
+    public static async find(searchFunct: (x: CmdPrinter) => boolean): Promise<CmdPrinter | undefined> {
         const all = await CmdPrinter.getAll();
         return all.find(searchFunct);
     }
 
     readonly name: string;
-    readonly computerName: string;
-    readonly type: number;
-    readonly driverName: string;
-    readonly portName: string;
+    readonly computerName?: string;
+    readonly type?: number;
+    readonly driverName?: string;
+    readonly portName?: string;
     readonly shared: boolean;
     readonly shareName: string;
-    readonly published: boolean;
+    readonly published?: boolean;
 
     private constructor(data: any) {
         this.name = data.name;

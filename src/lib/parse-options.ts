@@ -1,4 +1,4 @@
-import { PrintingOptions } from './interfaces';
+import { PrintingOptions } from './interfaces/index.js';
 
 export function parseOptions(paths: string[], options: PrintingOptions): string[] {
     const args: string[] = [ ...paths ];

@@ -1,1 +1,1 @@
-export { GetCodePageError } from './get-code-page-error';
+export { GetCodePageError } from './get-code-page-error.js';

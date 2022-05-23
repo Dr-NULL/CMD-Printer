@@ -1,12 +1,12 @@
-import { ArchitectureNotSupportedError, EmptyPrintArrayError } from './errors';
-import { EXEC_PATH_X64, EXEC_PATH_X86 } from '..';
-import { parseOptions } from './parse-options';
-import { PrintingOptions } from './interfaces';
-import { TmpFolder } from './tmp-folder';
-import { TmpFile } from './tmp-file';
-import { exec } from '../tool/cmd';
-
 import { resolve } from 'path';
+
+import { ArchitectureNotSupportedError, EmptyPrintArrayError } from './errors/index.js';
+import { EXEC_PATH_X64, EXEC_PATH_X86 } from '../index.js';
+import { parseOptions } from './parse-options.js';
+import { PrintingOptions } from './interfaces/index.js'
+import { TmpFolder } from './tmp-folder.js';
+import { TmpFile } from './tmp-file.js';
+import { exec } from '../tool/cmd/index.js';
 
 /**
  * Manages the printing tasks, and the printing configuration.

@@ -1,2 +1,2 @@
-export { ArchitectureNotSupportedError } from './architecture-not-supported-error';
-export { EmptyPrintArrayError } from './empty-print-array-error';
+export { ArchitectureNotSupportedError } from './architecture-not-supported-error.js';
+export { EmptyPrintArrayError } from './empty-print-array-error.js';

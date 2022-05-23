@@ -1,14 +1,14 @@
 import { join } from 'path';
+import { v4 as uuidv4 } from 'uuid';
+
 import * as fsPromises from 'fs/promises';
 import * as os from 'os';
 
-import { v4 as uuidv4 } from 'uuid';
-
-import { TmpFile } from './tmp-file';
+import { TmpFile } from './tmp-file.js';
 
 export class TmpFolder {
-    private _path: string;
-    public get path(): string {
+    private _path?: string;
+    public get path(): string | undefined {
         return this._path;
     }
 
@@ -23,7 +23,7 @@ export class TmpFolder {
             });
 
             // Clean the folder name
-            this._path = null;
+            this._path = undefined;
         }
     }
 

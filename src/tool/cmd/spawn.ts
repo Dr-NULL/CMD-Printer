@@ -1,5 +1,5 @@
 import * as cp from 'child_process';
-import { SpawnResponse } from './interfaces';
+import { SpawnResponse } from './interfaces/index.js';
 
 export async function spawn(program: string): Promise<SpawnResponse>;
 export async function spawn(program: string, args: string[]): Promise<SpawnResponse>;

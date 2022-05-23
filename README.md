@@ -1,9 +1,12 @@
 # CMD-Printer
 
-This is a package for print PDF to printers settled in the local machine. Designed to work with Windows, using [SumatraPDF](https://www.sumatrapdfreader.org) for print documents, and __Powershell__ commands for lists the available printers. Works with async methods for not block tha main execution thread. For install the package:
+This is a package for print PDF to printers settled in the local machine. Uses [SumatraPDF](https://www.sumatrapdfreader.org) for print documents, and __Powershell__ commands for lists the available printers. Works with async methods for not block tha main execution thread. For install the package:
 ```
 npm i --save cmd-printer
 ```
+
+Now this package works in Windows and WSL/WSL2 (thanks [hugodecasta](https://github.com/hugodecasta)). Besides is compatible with __CommonJS__ and __ESM__ projects too.
+
 
 ## Disclaimer
 

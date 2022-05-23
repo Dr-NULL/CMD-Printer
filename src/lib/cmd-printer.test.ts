@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import { CmdPrinter } from './cmd-printer';
+import { CmdPrinter } from './cmd-printer.js';
 
 describe('Testing "./lib/cmd-printer"', () => {
     it('Get all printers', async () => {

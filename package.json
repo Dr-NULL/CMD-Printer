@@ -1,10 +1,10 @@
 {
   "name": "cmd-printer",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Module for print PDF using node.js",
   "main": "dist/index.js",
   "scripts": {
-    "test": "cls && mocha --require ts-node/register ./**/*.test.ts",
+    "test": "mocha --require ts-node/register ./**/*.test.ts",
     "prepare": "tsc"
   },
   "repository": {
@@ -27,14 +27,14 @@
     "bin"
   ],
   "devDependencies": {
-    "@types/chai": "^4.2.22",
-    "@types/mocha": "^9.0.0",
-    "@types/node": "^16.10.2",
-    "@types/uuid": "^8.3.1",
-    "chai": "^4.3.4",
-    "mocha": "^9.1.2",
-    "ts-node": "^10.2.1",
-    "typescript": "^4.4.3"
+    "@types/chai": "^4.3.1",
+    "@types/mocha": "^9.1.1",
+    "@types/node": "^17.0.35",
+    "@types/uuid": "^8.3.4",
+    "chai": "^4.3.6",
+    "mocha": "^10.0.0",
+    "ts-node": "^10.8.0",
+    "typescript": "^4.6.4"
   },
   "dependencies": {
     "codepage": "^1.15.0",

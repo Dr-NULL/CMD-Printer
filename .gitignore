@@ -1,6 +1,8 @@
 node_modules
 dist
 
+*.tsbuildinfo
+
 bin/*
 !bin/sumatra-pdf-x86.exe
 !bin/sumatra-pdf-x64.exe

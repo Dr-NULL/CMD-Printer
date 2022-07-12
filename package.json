@@ -1,14 +1,14 @@
 {
   "name": "cmd-printer",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Module for print PDF using node.js and SumatraPDF",
   "type": "module",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
   "exports": {
     ".": {
-        "require": "./dist/cjs/index.js",
-        "import": "./dist/esm/index.js"
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/esm/index.js"
     }
   },
   "files": [
@@ -16,13 +16,11 @@
     "bin"
   ],
   "scripts": {
-    "test:cjs": "npm run clean && npm run build:cjs && mocha './dist/cjs/**/*.test.js'",
-    "test:esm": "npm run clean && npm run build:esm && mocha './dist/esm/**/*.test.js'",
-    "prepare": "npm run clean && npm run build",
-    "clean": "./clean.sh",
-    "build": "npm run build:cjs && npm run build:esm",
-    "build:cjs": "tsc -p ./tsconfig.cjs.json",
-    "build:esm": "tsc -p ./tsconfig.json"
+    "test": "ava",
+    "prepare": "./package.sh build",
+    "build": "./package.sh build",
+    "watch": "./package.sh watch",
+    "clean": "./package.sh clean"
   },
   "repository": {
     "type": "git",
@@ -39,18 +37,15 @@
     "url": "https://github.com/Dr-NULL/CMD-Printer/issues"
   },
   "homepage": "https://github.com/Dr-NULL/CMD-Printer#readme",
-  "devDependencies": {
-    "@types/chai": "^4.3.1",
-    "@types/mocha": "^9.1.1",
-    "@types/node": "^17.0.35",
-    "@types/uuid": "^8.3.4",
-    "chai": "^4.3.6",
-    "mocha": "^10.0.0",
-    "ts-node": "^10.8.0",
-    "typescript": "^4.6.4"
-  },
   "dependencies": {
     "codepage": "^1.15.0",
     "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.3",
+    "@types/uuid": "^8.3.4",
+    "ava": "^4.3.1",
+    "ts-node": "^10.8.2",
+    "typescript": "^4.7.4"
   }
 }
